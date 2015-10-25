@@ -24,7 +24,7 @@ ENABLE_SHADOW_MAPS = true
 GRAVITY = new THREE.Vector3(0, 0, -10)
 
 # Positions
-CAMERA_POSITON = new THREE.Vector3(0, -50, 50)
+CAMERA_POSITON = new THREE.Vector3(0, -100, 50)
 
 class @Base
   constructor: ->

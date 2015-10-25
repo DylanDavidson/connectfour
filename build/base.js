@@ -28,7 +28,7 @@
 
   GRAVITY = new THREE.Vector3(0, 0, -10);
 
-  CAMERA_POSITON = new THREE.Vector3(0, -50, 50);
+  CAMERA_POSITON = new THREE.Vector3(0, -100, 50);
 
   this.Base = (function() {
     function Base() {
