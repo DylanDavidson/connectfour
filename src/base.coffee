@@ -21,7 +21,7 @@ FAR_FRUSTRUM = 1000
 ENABLE_SHADOW_MAPS = true
 
 # Physics
-GRAVITY = new THREE.Vector3(0, 0, -10)
+GRAVITY = new THREE.Vector3(0, 0, -15)
 
 # Positions
 CAMERA_POSITON = new THREE.Vector3(70, -120, 50)

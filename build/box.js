@@ -6,7 +6,7 @@
       this.material = new THREE.MeshPhongMaterial({
         color: 0x95a5a6
       });
-      this.object = new THREE.Mesh(this.geometry, this.material);
+      this.object = new Physijs.BoxMesh(this.geometry, this.material, 0);
       this.object.receiveShadow = true;
       this.object.castShadow = true;
       game.addToScene(this.object);
