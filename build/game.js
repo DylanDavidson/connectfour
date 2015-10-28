@@ -17,39 +17,41 @@
   };
 
   this.Game = (function() {
+    Game.prototype.column_heights = [0, 0, 0, 0, 0, 0, 0];
+
     function Game() {
       this.base = new Base();
+      this.controller = new Controller(this);
       this.floor = new Box(this, 100, 100, 10);
       this.board = new Board(this);
-      this.piece = new Piece(this, true);
-      this.piece.place(0, 4);
-      timeout(3000, (function(_this) {
-        return function() {
-          _this.piece2 = new Piece(_this, false);
-          return _this.piece2.place(1, 4);
-        };
-      })(this));
-      timeout(6000, (function(_this) {
-        return function() {
-          _this.piece3 = new Piece(_this, true);
-          return _this.piece3.place(2, 4);
-        };
-      })(this));
-      timeout(9000, (function(_this) {
-        return function() {
-          _this.piece4 = new Piece(_this, false);
-          return _this.piece4.place(3, 4);
-        };
-      })(this));
-      timeout(12000, (function(_this) {
-        return function() {
-          _this.piece4 = new Piece(_this, true);
-          return _this.piece4.place(4, 4);
-        };
-      })(this));
+      this.setupPlaceholderPieces();
     }
 
+    Game.prototype.setupPlaceholderPieces = function() {
+      var i, j, piece, results;
+      this.placeholders = [];
+      results = [];
+      for (i = j = 0; j <= 6; i = ++j) {
+        piece = new Piece(this);
+        piece.stop();
+        piece.setColor(0xecf0f1);
+        piece.setOpacity(0.2);
+        piece.setPosition(this.board.COLUMNS[i], 0, 75);
+        piece.setName('Placeholder');
+        results.push(this.placeholders.push(piece));
+      }
+      return results;
+    };
+
+    Game.prototype.place = function(column) {
+      var row;
+      this.piece = new Piece(this);
+      row = this.column_heights[column]++;
+      return this.piece.place(row, column);
+    };
+
     Game.prototype.render = function() {
+      this.controller.update();
       return this.base.render();
     };
 

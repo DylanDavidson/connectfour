@@ -1,5 +1,5 @@
 class @Board
-  COLUMNS: [-41, -28, -14, 0, 14, 27, 41]
+  COLUMNS: [-43, -29, -15, -1, 13, 27, 41]
   ROWS: [13, 24, 35, 47, 57]
 
   constructor: (game) ->

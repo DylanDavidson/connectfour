@@ -9,6 +9,9 @@
 
     function Piece(game, player) {
       var color;
+      if (player == null) {
+        player = true;
+      }
       this.game = game;
       this.geometry = new THREE.CylinderGeometry(6, 6, 3, 20);
       if (player) {
@@ -20,23 +23,44 @@
         color: color
       });
       this.object = new Physijs.CylinderMesh(this.geometry, this.material, 10);
-      this.object._physijs.collison_flags = 4;
+      this.object._physijs.collision_flags = 4;
       this.object.receiveShadow = true;
       this.object.castShadow = true;
       game.addToScene(this.object);
     }
 
+    Piece.prototype.setName = function(name) {
+      return this.object.name = name;
+    };
+
+    Piece.prototype.setColor = function(color) {
+      return this.object.material.color.set(color);
+    };
+
+    Piece.prototype.setOpacity = function(opacity) {
+      this.object.material.transparent = true;
+      return this.object.material.opacity = opacity;
+    };
+
+    Piece.prototype.setPosition = function(x, y, z) {
+      this.object.position.set(x, y, z);
+      return this.object.__dirtyPosition = true;
+    };
+
     Piece.prototype.place = function(row, column) {
       var x_val;
       x_val = this.game.board.COLUMNS[column];
-      this.object.position.set(x_val, 0, this.START_HEIGHT);
-      this.object.__dirtyPosition = true;
+      this.setPosition(x_val, 0, this.START_HEIGHT);
       return this.check(row);
+    };
+
+    Piece.prototype.stop = function() {
+      return this.object.mass = 0;
     };
 
     Piece.prototype.check = function(row) {
       if (this.object.position.z <= this.game.board.ROWS[row]) {
-        return this.object.mass = 0;
+        return this.stop();
       } else {
         return timeout(50, (function(_this) {
           return function() {
