@@ -15,7 +15,8 @@
 class @Game
   constructor: ->
     @base = new Base()
-    @board = new Box(@, 100, 100, 10)
+    @floor = new Box(@, 100, 100, 10)
+    @board = new Board(@)
 
   render: ->
     @base.render()

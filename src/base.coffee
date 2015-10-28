@@ -24,7 +24,9 @@ ENABLE_SHADOW_MAPS = true
 GRAVITY = new THREE.Vector3(0, 0, -10)
 
 # Positions
-CAMERA_POSITON = new THREE.Vector3(0, -100, 50)
+CAMERA_POSITON = new THREE.Vector3(70, -120, 50)
+LOOK_AT_POSITION = new THREE.Vector3(0, 0, 25)
+LIGHT_POSITION = new THREE.Vector3(-20, -150, 80)
 
 class @Base
   constructor: ->
@@ -66,16 +68,16 @@ class @Base
   setupCamera: ->
     @setCameraPosition(CAMERA_POSITON.x, CAMERA_POSITON.y, CAMERA_POSITON.z)
     @camera.up = new THREE.Vector3(0, 0, 1)
-    @camera.lookAt(@scene.position)
+    @camera.lookAt(LOOK_AT_POSITION)
     @addToScene(@camera)
 
   setupSpotlight: ->
-    @scene.add(new THREE.AmbientLight(GRAY))
+    @scene.add(new THREE.AmbientLight(0xecf0f1))
 
-    @spotlight.position.set(-20, -50, 20)
-    @spotlight.lookAt(@scene.position)
+    @spotlight.position.set(LIGHT_POSITION.x, LIGHT_POSITION.y, LIGHT_POSITION.z)
+    @spotlight.lookAt(LOOK_AT_POSITION)
     @spotlight.shadowCameraNear = 20
-    @spotlight.shadowCameraFar = 300
+    @spotlight.shadowCameraFar = 500
     @spotlight.shadowDarkness = 0.5
     @spotlight.castShadow = true
     @addToScene(@spotlight)

@@ -3,10 +3,12 @@
   this.Box = (function() {
     function Box(game, length, width, height) {
       this.geometry = new THREE.BoxGeometry(length, width, height);
-      this.material = new THREE.MeshBasicMaterial({
-        color: 0x34495e
+      this.material = new THREE.MeshPhongMaterial({
+        color: 0x95a5a6
       });
       this.object = new THREE.Mesh(this.geometry, this.material);
+      this.object.receiveShadow = true;
+      this.object.castShadow = true;
       game.addToScene(this.object);
     }
 

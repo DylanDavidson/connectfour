@@ -15,7 +15,8 @@
   this.Game = (function() {
     function Game() {
       this.base = new Base();
-      this.board = new Box(this, 100, 100, 10);
+      this.floor = new Box(this, 100, 100, 10);
+      this.board = new Board(this);
     }
 
     Game.prototype.render = function() {
