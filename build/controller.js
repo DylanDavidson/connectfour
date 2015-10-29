@@ -9,6 +9,8 @@
 
     Controller.prototype.last = null;
 
+    Controller.prototype.player_turn = true;
+
     function Controller(game) {
       this.mouseclick = bind(this.mouseclick, this);
       this.mousemove = bind(this.mousemove, this);
@@ -24,11 +26,21 @@
 
     Controller.prototype.mouseclick = function(event) {
       var column;
-      if (!this.last) {
+      if (!(this.last && this.player_turn)) {
         return;
       }
       column = this.game.board.COLUMNS.indexOf(this.last.position.x);
-      return this.game.place(column);
+      this.game.place(column);
+      this.player_turn = false;
+      return this.game.moveAI();
+    };
+
+    Controller.prototype.isPlayerTurn = function() {
+      return this.player_turn;
+    };
+
+    Controller.prototype.setPlayerTurn = function(isPlayerTurn) {
+      return this.player_turn = isPlayerTurn;
     };
 
     Controller.prototype.update = function() {
@@ -46,7 +58,7 @@
       }
       this.last = intersects[0].object;
       this.last.oldColor = this.last.material.color.getHex();
-      return this.last.material.color.set(0xFF0000);
+      return this.last.material.color.set(0xf1c40f);
     };
 
     return Controller;

@@ -33,7 +33,7 @@ class @Piece
 
   place: (row, column) ->
     x_val = @game.board.COLUMNS[column]
-    @setPosition(x_val, 0, @START_HEIGHT)
+    @setPosition(x_val, -1, @START_HEIGHT)
     @check(row)
 
   stop: ->
@@ -43,5 +43,5 @@ class @Piece
     if @object.position.z <= @game.board.ROWS[row]
       @stop()
     else
-      timeout 50, =>
+      timeout 30, =>
         @check(row)

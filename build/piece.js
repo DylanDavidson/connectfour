@@ -50,7 +50,7 @@
     Piece.prototype.place = function(row, column) {
       var x_val;
       x_val = this.game.board.COLUMNS[column];
-      this.setPosition(x_val, 0, this.START_HEIGHT);
+      this.setPosition(x_val, -1, this.START_HEIGHT);
       return this.check(row);
     };
 
@@ -62,7 +62,7 @@
       if (this.object.position.z <= this.game.board.ROWS[row]) {
         return this.stop();
       } else {
-        return timeout(50, (function(_this) {
+        return timeout(30, (function(_this) {
           return function() {
             return _this.check(row);
           };

@@ -17,25 +17,33 @@
   };
 
   this.Game = (function() {
+    Game.prototype.score = null;
+
     Game.prototype.column_heights = [0, 0, 0, 0, 0, 0, 0];
 
     function Game() {
+      var i, k;
       this.base = new Base();
       this.controller = new Controller(this);
       this.floor = new Box(this, 100, 100, 10);
       this.board = new Board(this);
       this.setupPlaceholderPieces();
+      this.ai = new AI();
+      this.score = new Array(7);
+      for (i = k = 0; k <= 6; i = ++k) {
+        this.score[i] = new Array(7);
+      }
     }
 
     Game.prototype.setupPlaceholderPieces = function() {
-      var i, j, piece, results;
+      var i, k, piece, results;
       this.placeholders = [];
       results = [];
-      for (i = j = 0; j <= 6; i = ++j) {
+      for (i = k = 0; k <= 6; i = ++k) {
         piece = new Piece(this);
         piece.stop();
         piece.setColor(0xecf0f1);
-        piece.setOpacity(0.2);
+        piece.setOpacity(0.3);
         piece.setPosition(this.board.COLUMNS[i], 0, 75);
         piece.setName('Placeholder');
         results.push(this.placeholders.push(piece));
@@ -45,9 +53,91 @@
 
     Game.prototype.place = function(column) {
       var row;
-      this.piece = new Piece(this);
+      this.piece = new Piece(this, this.controller.isPlayerTurn());
       row = this.column_heights[column]++;
-      return this.piece.place(row, column);
+      this.score[row][column] = this.controller.isPlayerTurn();
+      this.piece.place(row, column);
+      return console.log(this.checkForWin());
+    };
+
+    Game.prototype.checkForWin = function() {
+      var i, j, k, l;
+      for (i = k = 0; k <= 6; i = ++k) {
+        for (j = l = 0; l <= 6; j = ++l) {
+          if (this.isHorizontalWin(i, j) || this.isVerticalWin(i, j) || this.isDiagonalWin(i, j)) {
+            return true;
+          } else if (this.isHorizontalWin(i, j) === false || this.isVerticalWin(i, j) === false || this.isDiagonalWin(i, j) === false) {
+            return false;
+          }
+        }
+      }
+      return void 0;
+    };
+
+    Game.prototype.isHorizontalWin = function(row, col) {
+      if (this.score[row][col] === void 0) {
+        return void 0;
+      }
+      if (col > 3) {
+        return void 0;
+      }
+      if (this.score[row][col] === this.score[row][col + 1] && this.score[row][col + 1] === this.score[row][col + 2] && this.score[row][col + 2] === this.score[row][col + 3]) {
+        return this.score[row][col];
+      }
+      return void 0;
+    };
+
+    Game.prototype.isVerticalWin = function(row, col) {
+      if (this.score[row][col] === void 0) {
+        return void 0;
+      }
+      if (row > 1) {
+        return void 0;
+      }
+      if (this.score[row][col] === this.score[row + 1][col] && this.score[row + 1][col] === this.score[row + 2][col] && this.score[row + 2][col] === this.score[row + 3][col]) {
+        return this.score[row][col];
+      }
+      return void 0;
+    };
+
+    Game.prototype.isDiagonalWin = function(row, col) {
+      if (this.score[row][col] === void 0) {
+        return void 0;
+      }
+      if (row > 1) {
+        return void 0;
+      }
+      if (col <= 3) {
+        if (this.score[row][col] === this.score[row + 1][col + 1] && this.score[row + 1][col + 1] === this.score[row + 2][col + 2] && this.score[row + 2][col + 2] === this.score[row + 3][col + 3]) {
+          return this.score[row][col];
+        }
+      }
+      if (col >= 3) {
+        if (this.score[row][col] === this.score[row + 1][col - 1] && this.score[row + 1][col - 1] === this.score[row + 2][col - 2] && this.score[row + 2][col - 2] === this.score[row + 3][col - 3]) {
+          return this.score[row][col];
+        }
+      }
+      return void 0;
+    };
+
+    Game.prototype.highlight = function(column) {
+      this.placeholders[column].setColor(0xe74c3c);
+      return timeout(600, (function(_this) {
+        return function() {
+          return _this.placeholders[column].setColor(0xecf0f1);
+        };
+      })(this));
+    };
+
+    Game.prototype.moveAI = function() {
+      return timeout(3000, (function(_this) {
+        return function() {
+          _this.place(_this.ai.move());
+          return timeout(1000, function() {
+            return _this.controller.setPlayerTurn(true);
+          });
+        };
+      })(this));
     };
 
     Game.prototype.render = function() {
