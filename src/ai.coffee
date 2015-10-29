@@ -8,7 +8,7 @@ class @AI
     @last = Math.round(Math.random() * 6)
 
   move: ->
-    @last
+    @randomColumn()
 
   simulate: ->
     column = @randomColumn()

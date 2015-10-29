@@ -60,7 +60,9 @@
 
     Piece.prototype.check = function(row) {
       if (this.object.position.z <= this.game.board.ROWS[row]) {
-        return this.stop();
+        this.stop();
+        this.object.position.setZ(this.game.board.ROWS[row]);
+        return this.object.__dirtyPosition = true;
       } else {
         return timeout(30, (function(_this) {
           return function() {

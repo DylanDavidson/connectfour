@@ -42,6 +42,8 @@ class @Piece
   check: (row) ->
     if @object.position.z <= @game.board.ROWS[row]
       @stop()
+      @object.position.setZ(@game.board.ROWS[row])
+      @object.__dirtyPosition = true
     else
       timeout 30, =>
         @check(row)

@@ -16,7 +16,6 @@
   requestAnimationFrame(window.render)
 
 class @Game
-  score: null
   column_heights: [0, 0, 0, 0, 0, 0, 0]
 
   constructor: ->
@@ -26,10 +25,7 @@ class @Game
     @board = new Board(@)
     @setupPlaceholderPieces()
     @ai = new AI()
-    @score = new Array(7)
-    for i in [0..6]
-      @score[i] = new Array(7)
-
+    @score = new Score(@)
 
   setupPlaceholderPieces: ->
     @placeholders = []
@@ -42,57 +38,20 @@ class @Game
       piece.setName('Placeholder')
       @placeholders.push(piece)
 
+  win: (playerWins) ->
+    text = if playerWins then 'You Win' else 'AI Wins'
+    element = document.getElementById('win')
+    element.innerHTML = text
+    element.style.display = "block"
+
   place: (column) ->
     @piece = new Piece(@, @controller.isPlayerTurn())
     row = @column_heights[column]++
-    @score[row][column] = @controller.isPlayerTurn()
+    @score.place(row, column, @controller.isPlayerTurn())
     @piece.place(row, column)
-    console.log(@checkForWin())
-
-  checkForWin: ->
-    for i in [0..6]
-      for j in [0..6]
-        # console.log("Horizontal: " + @isHorizontalWin(i, j))
-        # console.log("Vertical: " + @isVerticalWin(i, j))
-        # console.log("Diagonal: " + @isDiagonalWin(i, j))
-        if @isHorizontalWin(i, j) || @isVerticalWin(i, j) || @isDiagonalWin(i, j)
-          return true
-        else if @isHorizontalWin(i, j) == false || @isVerticalWin(i, j) == false || @isDiagonalWin(i, j) == false
-          return false
-    return undefined
-
-  isHorizontalWin: (row, col) ->
-    return undefined if @score[row][col] == undefined
-    return undefined if col > 3 # Horizontal win not possible past this point
-    if @score[row][col] == @score[row][col + 1] &&
-      @score[row][col + 1] == @score[row][col + 2] &&
-      @score[row][col + 2] == @score[row][col + 3]
-       return @score[row][col]
-    return undefined
-
-  isVerticalWin: (row, col) ->
-    return undefined if @score[row][col] == undefined
-    return undefined if row > 1 # Vertical win not possible past this point
-    if @score[row][col] == @score[row + 1][col] &&
-      @score[row + 1][col] == @score[row + 2][col] &&
-      @score[row + 2][col] == @score[row + 3][col]
-       return @score[row][col]
-    return undefined
-
-  isDiagonalWin: (row, col) ->
-    return undefined if @score[row][col] == undefined
-    return undefined if row > 1
-    if col <= 3
-     if @score[row][col] == @score[row + 1][col + 1] &&
-      @score[row + 1][col + 1] == @score[row + 2][col + 2] &&
-      @score[row + 2][col + 2] == @score[row + 3][col + 3]
-        return @score[row][col]
-    if col >= 3
-      if @score[row][col] == @score[row + 1][col - 1] &&
-        @score[row + 1][col - 1] == @score[row + 2][col - 2] &&
-        @score[row + 2][col - 2] == @score[row + 3][col - 3]
-          return @score[row][col]
-    return undefined
+    result = @score.checkForWin()
+    if result || result == false
+      @win(result)
 
   highlight: (column) ->
     @placeholders[column].setColor(0xe74c3c)
@@ -101,9 +60,9 @@ class @Game
 
   moveAI: ->
     #@ai.simulate()
-    timeout 3000, =>
+    timeout 2000, =>
       @place(@ai.move())
-      timeout 1000, =>
+      timeout 750, =>
         @controller.setPlayerTurn(true)
 
   render: ->

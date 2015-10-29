@@ -12,7 +12,7 @@
     };
 
     AI.prototype.move = function() {
-      return this.last;
+      return this.randomColumn();
     };
 
     AI.prototype.simulate = function() {
