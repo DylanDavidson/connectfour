@@ -1,29 +1,15 @@
 class @AI
-  last: 0
+  constructor: ->
+    self.onmessage = @onmessage
 
-  constructor: (game) ->
-    @game = game
+  onmessage: (message) =>
+    if message.data == 'move'
+      postMessage(@randomColumn())
 
   randomColumn: ->
-    @last = Math.round(Math.random() * 6)
+    Math.round(Math.random() * 6)
 
   move: ->
     @randomColumn()
 
-  simulate: ->
-    column = @randomColumn()
-    time = 0
-    for i in [1..4]
-      time += 600
-      timeout time, ->
-        @last = column
-        @game.highlight(column)
-        if column == 0
-          column += 1
-        else if column == 6
-          column -= 1
-        else
-          if Math.round(Math.random()) == 0
-            column -= 1
-          else
-            column += 1
+@ai = new AI()
