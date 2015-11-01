@@ -28,6 +28,7 @@ class @Game
     @worker = new Worker('./build/ai.js')
     @worker.onmessage = @onmessage
     @score = new Score(@)
+    @sound = new Sound(@)
 
   start: ->
     @controller = new Controller(@)
@@ -84,6 +85,7 @@ class @Game
     timeout 1500, =>
       @place(message.data)
       timeout 750, =>
+        return unless @controller
         @controller.setPlayerTurn(true)
 
   render: ->

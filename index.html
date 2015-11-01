@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <!-- Libraries -->
     <script type="text/javascript" src="libs/three.min.js"></script>
@@ -23,13 +25,28 @@
     <script type="text/javascript" src="build/controller.js"></script>
     <script type="text/javascript" src="build/score.js"></script>
     <script type="text/javascript" src="build/menu.js"></script>
+    <script type="text/javascript" src="build/sound.js"></script>
 
     <link rel="stylesheet" type="text/css" href="src/main.css">
+
+    <!-- Music -->
+    <audio id="track1" src="./music/OnlyInstrumental.mp3"></audio>
+    <audio id="track2" src="./music/NightOwl.mp3"></audio>
   </head>
   <body>
     <div class="name">
       Created by
       <a href="http://nylad.me">Dylan Davidson</a>
+    </div>
+
+    <div class="music">
+      Music by
+      <a href="http://brokeforfree.com/">Broke For Free</a>
+    </div>
+
+    <div class="sound">
+      <i class="fa fa-volume-up" id="on"></i>
+      <i class="fa fa-volume-off" id="off"></i>
     </div>
 
     <div class="win" id="win">

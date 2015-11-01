@@ -33,6 +33,7 @@
       this.worker = new Worker('./build/ai.js');
       this.worker.onmessage = this.onmessage;
       this.score = new Score(this);
+      this.sound = new Sound(this);
     }
 
     Game.prototype.start = function() {
@@ -114,6 +115,9 @@
         return function() {
           _this.place(message.data);
           return timeout(750, function() {
+            if (!_this.controller) {
+              return;
+            }
             return _this.controller.setPlayerTurn(true);
           });
         };
