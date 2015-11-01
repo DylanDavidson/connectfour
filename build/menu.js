@@ -4,25 +4,49 @@
 
   this.Menu = (function() {
     function Menu(game) {
+      this.clickreset = bind(this.clickreset, this);
       this.clickplay = bind(this.clickplay, this);
       this.game = game;
       this.menu = document.getElementById('menu');
-      this.full = document.getElementById('full');
+      this.title = document.getElementById('title');
       this.play = document.getElementById('play');
+      this.reset = document.getElementById('reset');
+      this.win = document.getElementById('win');
       this.play.addEventListener('click', this.clickplay);
+      this.reset.addEventListener('click', this.clickreset);
     }
 
     Menu.prototype.clickplay = function(event) {
       this.menu.style.opacity = 0;
       this.menu.style.visibility = 'hidden';
-      this.full.style.opacity = 0;
-      this.full.style.visibility = 'hidden';
+      this.title.style.opacity = 0;
+      this.title.style.visibility = 'hidden';
+      this.play.style.opacity = 0;
+      this.play.style.visibility = 'hidden';
       return this.game.start();
     };
 
-    Menu.prototype.showMenu = function() {
+    Menu.prototype.clickreset = function(event) {
+      this.hideResetMenu();
+      this.title.style.opacity = 1;
+      this.title.style.visibility = 'visible';
+      this.play.style.opacity = 1;
+      this.play.style.visibility = 'visible';
+      return this.game.reset();
+    };
+
+    Menu.prototype.showResetMenu = function() {
       this.menu.style.opacity = 0.8;
-      return this.menu.style.visibility = 'visible';
+      this.menu.style.visibility = 'visible';
+      this.reset.style.opacity = 1;
+      return this.reset.style.visibility = 'visible';
+    };
+
+    Menu.prototype.hideResetMenu = function() {
+      this.win.style.opacity = 0;
+      this.win.style.visibility = 'hidden';
+      this.reset.style.opacity = 0;
+      return this.reset.style.visibility = 'hidden';
     };
 
     return Menu;

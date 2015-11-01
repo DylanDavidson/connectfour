@@ -70,6 +70,8 @@ a:hover {
   width: 100%;
   text-align: center;
   margin-top: 5%;
+
+  transition: opacity 1s, visibility 1s;
 }
 
 .button {
@@ -84,7 +86,8 @@ a:hover {
 
   margin: auto;
 
-  transition: background 0.9s, color 1s;
+  transition: opacity 1s, visibility 1s;
+  transition: background 0.9s, color 1s, opacity 1s, visibility 1s;
 }
 
 .button:hover {
@@ -92,4 +95,9 @@ a:hover {
   background: white;
   color: #16a085;
   transition: background 0.9s, color 1s;
+}
+
+#reset {
+  visibility: hidden;
+  opacity: 0    ;
 }

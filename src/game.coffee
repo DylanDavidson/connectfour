@@ -17,6 +17,7 @@
 
 class @Game
   column_heights: [0, 0, 0, 0, 0, 0, 0]
+  pieces: []
 
   constructor: ->
     @base = new Base()
@@ -30,6 +31,13 @@ class @Game
 
   start: ->
     @controller = new Controller(@)
+
+  reset: ->
+    @column_heights = [0, 0, 0, 0, 0, 0, 0]
+    @score = new Score(@)
+    for piece in @pieces
+      @base.removeFromScene(piece.object)
+    @pieces = []
 
   setupPlaceholderPieces: ->
     @placeholders = []
@@ -50,14 +58,15 @@ class @Game
     element.innerHTML = text
     element.style.opacity = 1
     element.style.visibility = "visible"
-    @menu.showMenu()
+    @menu.showResetMenu()
 
   place: (column) ->
     @column = null
-    @piece = new Piece(@, @controller.isPlayerTurn())
+    piece = new Piece(@, @controller.isPlayerTurn())
     row = @column_heights[column]++
     @score.place(row, column, @controller.isPlayerTurn())
-    @piece.place(row, column)
+    piece.place(row, column)
+    @pieces.push(piece)
     result = @score.checkForWin()
     if result || result == false
       @win(result)

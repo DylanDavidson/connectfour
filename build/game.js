@@ -21,6 +21,8 @@
   this.Game = (function() {
     Game.prototype.column_heights = [0, 0, 0, 0, 0, 0, 0];
 
+    Game.prototype.pieces = [];
+
     function Game() {
       this.onmessage = bind(this.onmessage, this);
       this.base = new Base();
@@ -35,6 +37,18 @@
 
     Game.prototype.start = function() {
       return this.controller = new Controller(this);
+    };
+
+    Game.prototype.reset = function() {
+      var j, len, piece, ref;
+      this.column_heights = [0, 0, 0, 0, 0, 0, 0];
+      this.score = new Score(this);
+      ref = this.pieces;
+      for (j = 0, len = ref.length; j < len; j++) {
+        piece = ref[j];
+        this.base.removeFromScene(piece.object);
+      }
+      return this.pieces = [];
     };
 
     Game.prototype.setupPlaceholderPieces = function() {
@@ -62,16 +76,17 @@
       element.innerHTML = text;
       element.style.opacity = 1;
       element.style.visibility = "visible";
-      return this.menu.showMenu();
+      return this.menu.showResetMenu();
     };
 
     Game.prototype.place = function(column) {
-      var result, row;
+      var piece, result, row;
       this.column = null;
-      this.piece = new Piece(this, this.controller.isPlayerTurn());
+      piece = new Piece(this, this.controller.isPlayerTurn());
       row = this.column_heights[column]++;
       this.score.place(row, column, this.controller.isPlayerTurn());
-      this.piece.place(row, column);
+      piece.place(row, column);
+      this.pieces.push(piece);
       result = this.score.checkForWin();
       if (result || result === false) {
         return this.win(result);
