@@ -3,8 +3,8 @@
   this.Score = (function() {
     function Score(game) {
       var i, k;
-      this.board = new Array(7);
-      for (i = k = 0; k <= 6; i = ++k) {
+      this.board = new Array(5);
+      for (i = k = 0; k <= 4; i = ++k) {
         this.board[i] = new Array(7);
       }
     }
@@ -13,9 +13,21 @@
       return this.board[row][column] = isPlayer;
     };
 
+    Score.prototype.checkForDraw = function() {
+      var col, k, l, row;
+      for (row = k = 0; k <= 4; row = ++k) {
+        for (col = l = 0; l <= 6; col = ++l) {
+          if (this.board[row][col] === void 0 || this.board[row][col] === null) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+
     Score.prototype.checkForWin = function() {
       var d, h, i, j, k, l, v;
-      for (i = k = 0; k <= 6; i = ++k) {
+      for (i = k = 0; k <= 4; i = ++k) {
         for (j = l = 0; l <= 6; j = ++l) {
           h = this.isHorizontalWin(i, j);
           v = this.isVerticalWin(i, j);

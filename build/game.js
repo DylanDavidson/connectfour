@@ -68,13 +68,12 @@
       return results;
     };
 
-    Game.prototype.win = function(playerWins) {
+    Game.prototype.win = function(message) {
       var element, text;
       this.controller.reset();
       this.controller = null;
-      text = playerWins ? 'You Win' : 'AI Wins';
-      element = document.getElementById('win');
-      element.innerHTML = text;
+      text = element = document.getElementById('win');
+      element.innerHTML = message;
       element.style.opacity = 1;
       element.style.visibility = "visible";
       return this.menu.showResetMenu();
@@ -88,9 +87,12 @@
       this.score.place(row, column, this.controller.isPlayerTurn());
       piece.place(row, column);
       this.pieces.push(piece);
+      if (this.score.checkForDraw()) {
+        this.win('DRAW');
+      }
       result = this.score.checkForWin();
       if (result || result === false) {
-        return this.win(result);
+        return this.win(result ? 'You Win' : 'AI Wins');
       }
     };
 
@@ -104,7 +106,7 @@
     };
 
     Game.prototype.moveAI = function() {
-      return this.worker.postMessage('move');
+      return this.worker.postMessage(JSON.stringify(this.score.board));
     };
 
     Game.prototype.onmessage = function(message) {

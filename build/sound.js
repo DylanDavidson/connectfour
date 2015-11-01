@@ -46,8 +46,8 @@
     };
 
     Sound.prototype.volumeup = function() {
-      this.track1.volume = 1;
-      this.track2.volume = 1;
+      this.track1.volume = 0.8;
+      this.track2.volume = 0.8;
       this.on.style.visibility = 'visible';
       this.on.style.opacity = 1;
       this.off.style.visibility = 'hidden';

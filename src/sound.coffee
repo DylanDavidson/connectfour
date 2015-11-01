@@ -33,8 +33,8 @@ class @Sound
     localStorage.setItem('soundon', @soundon)
 
   volumeup: ->
-    @track1.volume = 1
-    @track2.volume = 1
+    @track1.volume = 0.8
+    @track2.volume = 0.8
     @on.style.visibility = 'visible'
     @on.style.opacity = 1
     @off.style.visibility = 'hidden'

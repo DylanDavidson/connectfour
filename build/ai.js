@@ -9,9 +9,13 @@
     }
 
     AI.prototype.onmessage = function(message) {
-      if (message.data === 'move') {
-        return postMessage(this.randomColumn());
+      var board, move;
+      board = JSON.parse(message.data);
+      move = this.randomColumn();
+      while (board[4][move] !== null && board[4][move] !== void 0) {
+        move = this.randomColumn();
       }
+      return postMessage(move);
     };
 
     AI.prototype.randomColumn = function() {

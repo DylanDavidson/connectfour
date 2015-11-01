@@ -51,12 +51,12 @@ class @Game
       piece.setName('Placeholder')
       @placeholders.push(piece)
 
-  win: (playerWins) ->
+  win: (message) ->
     @controller.reset()
     @controller = null
-    text = if playerWins then 'You Win' else 'AI Wins'
+    text =
     element = document.getElementById('win')
-    element.innerHTML = text
+    element.innerHTML = message
     element.style.opacity = 1
     element.style.visibility = "visible"
     @menu.showResetMenu()
@@ -68,9 +68,11 @@ class @Game
     @score.place(row, column, @controller.isPlayerTurn())
     piece.place(row, column)
     @pieces.push(piece)
+    if @score.checkForDraw()
+      @win('DRAW')
     result = @score.checkForWin()
     if result || result == false
-      @win(result)
+      @win(if result then 'You Win' else 'AI Wins')
 
   highlight: (column) ->
     @placeholders[column].setColor(0xe74c3c)
@@ -78,7 +80,7 @@ class @Game
       @placeholders[column].setColor(0xecf0f1)
 
   moveAI: ->
-    @worker.postMessage('move')
+    @worker.postMessage(JSON.stringify(@score.board))
 
   onmessage: (message) =>
     return unless @controller

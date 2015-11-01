@@ -1,14 +1,22 @@
 class @Score
   constructor: (game) ->
-    @board = new Array(7)
-    for i in [0..6]
+    @board = new Array(5)
+    for i in [0..4]
       @board[i] = new Array(7)
 
   place: (row, column, isPlayer) ->
     @board[row][column] = isPlayer
 
+
+  checkForDraw: ->
+    for row in [0..4]
+      for col in [0..6]
+        if @board[row][col] == undefined || @board[row][col] == null
+          return false
+    return true
+
   checkForWin: ->
-    for i in [0..6]
+    for i in [0..4]
       for j in [0..6]
         h = @isHorizontalWin(i, j); v = @isVerticalWin(i, j); d = @isDiagonalWin(i, j)
         if h || v || d

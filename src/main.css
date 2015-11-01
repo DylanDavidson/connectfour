@@ -40,8 +40,12 @@ a:hover {
   right: 60px;
   z-index: 30;
   font-size: 50px;
+  transition: color 1s;
 }
 
+.sound:hover {
+  color: #16a085;
+}
 .sound .fa-volume-up {
   cursor: pointer;
   position: absolute;
