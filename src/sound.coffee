@@ -8,6 +8,7 @@ class @Sound
     @off.addEventListener('click', @togglesound)
     @track1 = document.getElementById('track1')
     @track2 = document.getElementById('track2')
+    @piece = document.getElementById('piece')
     @track1.play()
     @track1.addEventListener('ended', @track1ended)
     @track2.addEventListener('ended', @track2ended)
@@ -46,3 +47,6 @@ class @Sound
     @off.style.opacity = 1
     @on.style.visibility = 'hidden'
     @on.style.opacity = 0
+
+  playPieceSound: ->
+    @piece.play() if @soundon

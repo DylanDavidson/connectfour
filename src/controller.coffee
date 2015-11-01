@@ -15,6 +15,7 @@ class @Controller
 
   mouseclick: (event) =>
     return unless @last && @player_turn
+    return if event.target.id == 'on' || event.target.id == 'off' || event.target.tagName == 'A'
     column = @game.board.COLUMNS.indexOf(@last.position.x)
     @game.place(column)
     @player_turn = false

@@ -26,6 +26,7 @@
     function Game() {
       this.onmessage = bind(this.onmessage, this);
       this.base = new Base();
+      this.sound = new Sound(this);
       this.menu = new Menu(this);
       this.floor = new Box(this, 100, 100, 10);
       this.board = new Board(this);
@@ -33,7 +34,6 @@
       this.worker = new Worker('./build/ai.js');
       this.worker.onmessage = this.onmessage;
       this.score = new Score(this);
-      this.sound = new Sound(this);
     }
 
     Game.prototype.start = function() {

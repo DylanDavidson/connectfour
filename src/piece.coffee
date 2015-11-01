@@ -44,6 +44,7 @@ class @Piece
       @stop()
       @object.position.setZ(@game.board.ROWS[row])
       @object.__dirtyPosition = true
+      @game.sound.playPieceSound()
     else
       timeout 30, =>
         @check(row)

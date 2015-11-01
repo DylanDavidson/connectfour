@@ -15,6 +15,7 @@
       this.off.addEventListener('click', this.togglesound);
       this.track1 = document.getElementById('track1');
       this.track2 = document.getElementById('track2');
+      this.piece = document.getElementById('piece');
       this.track1.play();
       this.track1.addEventListener('ended', this.track1ended);
       this.track2.addEventListener('ended', this.track2ended);
@@ -60,6 +61,12 @@
       this.off.style.opacity = 1;
       this.on.style.visibility = 'hidden';
       return this.on.style.opacity = 0;
+    };
+
+    Sound.prototype.playPieceSound = function() {
+      if (this.soundon) {
+        return this.piece.play();
+      }
     };
 
     return Sound;

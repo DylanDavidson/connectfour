@@ -29,6 +29,9 @@
       if (!(this.last && this.player_turn)) {
         return;
       }
+      if (event.target.id === 'on' || event.target.id === 'off' || event.target.tagName === 'A') {
+        return;
+      }
       column = this.game.board.COLUMNS.indexOf(this.last.position.x);
       this.game.place(column);
       this.player_turn = false;

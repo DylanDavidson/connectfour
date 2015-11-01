@@ -21,6 +21,7 @@ class @Game
 
   constructor: ->
     @base = new Base()
+    @sound = new Sound(@)
     @menu = new Menu(@)
     @floor = new Box(@, 100, 100, 10)
     @board = new Board(@)
@@ -28,7 +29,6 @@ class @Game
     @worker = new Worker('./build/ai.js')
     @worker.onmessage = @onmessage
     @score = new Score(@)
-    @sound = new Sound(@)
 
   start: ->
     @controller = new Controller(@)
