@@ -61,6 +61,12 @@
       return this.last.material.color.set(0xf1c40f);
     };
 
+    Controller.prototype.reset = function() {
+      if (this.last !== null) {
+        return this.last.material.color.set(this.last.oldColor);
+      }
+    };
+
     return Controller;
 
   })();

@@ -16,18 +16,20 @@
   requestAnimationFrame(window.render)
 
 class @Game
-  won: false
   column_heights: [0, 0, 0, 0, 0, 0, 0]
 
   constructor: ->
     @base = new Base()
-    @controller = new Controller(@)
+    @menu = new Menu(@)
     @floor = new Box(@, 100, 100, 10)
     @board = new Board(@)
     @setupPlaceholderPieces()
     @worker = new Worker('./build/ai.js')
     @worker.onmessage = @onmessage
     @score = new Score(@)
+
+  start: ->
+    @controller = new Controller(@)
 
   setupPlaceholderPieces: ->
     @placeholders = []
@@ -41,14 +43,17 @@ class @Game
       @placeholders.push(piece)
 
   win: (playerWins) ->
-    @won = true
+    @controller.reset()
+    @controller = null
     text = if playerWins then 'You Win' else 'AI Wins'
     element = document.getElementById('win')
     element.innerHTML = text
-    element.style.display = "block"
+    element.style.opacity = 1
+    element.style.visibility = "visible"
+    @menu.showMenu()
 
   place: (column) ->
-    return if @won
+    @column = null
     @piece = new Piece(@, @controller.isPlayerTurn())
     row = @column_heights[column]++
     @score.place(row, column, @controller.isPlayerTurn())
@@ -66,13 +71,14 @@ class @Game
     @worker.postMessage('move')
 
   onmessage: (message) =>
+    return unless @controller
     timeout 1500, =>
       @place(message.data)
       timeout 750, =>
         @controller.setPlayerTurn(true)
 
   render: ->
-    @controller.update()
+    @controller.update() if @controller
     @base.render()
 
   addToScene: (object) ->

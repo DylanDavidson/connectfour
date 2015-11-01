@@ -37,3 +37,7 @@ class @Controller
     @last = intersects[0].object
     @last.oldColor = @last.material.color.getHex()
     @last.material.color.set(0xf1c40f)
+
+  reset: ->
+    if @last != null
+      @last.material.color.set(@last.oldColor)

@@ -19,14 +19,12 @@
   };
 
   this.Game = (function() {
-    Game.prototype.won = false;
-
     Game.prototype.column_heights = [0, 0, 0, 0, 0, 0, 0];
 
     function Game() {
       this.onmessage = bind(this.onmessage, this);
       this.base = new Base();
-      this.controller = new Controller(this);
+      this.menu = new Menu(this);
       this.floor = new Box(this, 100, 100, 10);
       this.board = new Board(this);
       this.setupPlaceholderPieces();
@@ -34,6 +32,10 @@
       this.worker.onmessage = this.onmessage;
       this.score = new Score(this);
     }
+
+    Game.prototype.start = function() {
+      return this.controller = new Controller(this);
+    };
 
     Game.prototype.setupPlaceholderPieces = function() {
       var i, j, piece, results;
@@ -53,18 +55,19 @@
 
     Game.prototype.win = function(playerWins) {
       var element, text;
-      this.won = true;
+      this.controller.reset();
+      this.controller = null;
       text = playerWins ? 'You Win' : 'AI Wins';
       element = document.getElementById('win');
       element.innerHTML = text;
-      return element.style.display = "block";
+      element.style.opacity = 1;
+      element.style.visibility = "visible";
+      return this.menu.showMenu();
     };
 
     Game.prototype.place = function(column) {
       var result, row;
-      if (this.won) {
-        return;
-      }
+      this.column = null;
       this.piece = new Piece(this, this.controller.isPlayerTurn());
       row = this.column_heights[column]++;
       this.score.place(row, column, this.controller.isPlayerTurn());
@@ -89,6 +92,9 @@
     };
 
     Game.prototype.onmessage = function(message) {
+      if (!this.controller) {
+        return;
+      }
       return timeout(1500, (function(_this) {
         return function() {
           _this.place(message.data);
@@ -100,7 +106,9 @@
     };
 
     Game.prototype.render = function() {
-      this.controller.update();
+      if (this.controller) {
+        this.controller.update();
+      }
       return this.base.render();
     };
 
