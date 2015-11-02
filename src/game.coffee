@@ -26,7 +26,7 @@ class @Game
     @floor = new Box(@, 100, 100, 10)
     @board = new Board(@)
     @setupPlaceholderPieces()
-    @worker = new Worker('./build/ai.js')
+    @worker = new Worker('./build/worker.js')
     @worker.onmessage = @onmessage
     @score = new Score(@)
 

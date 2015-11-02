@@ -31,7 +31,7 @@
       this.floor = new Box(this, 100, 100, 10);
       this.board = new Board(this);
       this.setupPlaceholderPieces();
-      this.worker = new Worker('./build/ai.js');
+      this.worker = new Worker('./build/worker.js');
       this.worker.onmessage = this.onmessage;
       this.score = new Score(this);
     }
